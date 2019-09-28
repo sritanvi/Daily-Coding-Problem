@@ -7,6 +7,8 @@ Given two strings, compute the edit distance between them.
 
 '''
 
+
+# Inefficient solution
 def recursive_solve(str1, str2, i, k):
 
     if i == 0:
@@ -23,10 +25,32 @@ def recursive_solve(str1, str2, i, k):
 
 
 
+# Efficient solution O(n^2)
+def dynamic_solve(str1, str2):
 
+    l1 = len(str1)
+    l2 = len(str2)
+
+    dp = [[0 for i in range(l2+1)] for j in range(l1+1)]
+
+
+    for i in range(l1+1):
+
+        for j in range(l2+1):
+
+            if(i == 0):
+                dp[i][j] = j
+            elif(j == 0):
+                dp[i][j] = i
+            elif str1[i-1] == str2[j-1]:
+                dp[i][j] = dp[i-1][j-1]
+            else:
+                dp[i][j] = 1 +  min(dp[i-1][j-1], min(dp[i][j-1], dp[i-1][j]))
+
+    return dp[l1][l2]
 str1 = input()
 str2 = input()
 len1 = len(str1)
 len2 = len(str2)
 print(recursive_solve(str1, str2, len1, len2))
-
+print(dynamic_solve(str1, str2))
